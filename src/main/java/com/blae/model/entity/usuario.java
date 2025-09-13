@@ -2,8 +2,6 @@ package com.blae.model.entity;
 
 import com.blae.model.enums.Rol;
 import jakarta.persistence.*;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data
@@ -18,7 +16,7 @@ public class usuario {
     @Column(name="nombre", nullable = false, length = 100)
     private String nombre;
 
-    @Column(nullable = false, length = 100)
+    @Column(name="apellido", nullable = false, length = 100)
     private String apellido;
 
     @Column(name="email", nullable = false, unique = true, length = 150)
@@ -27,11 +25,11 @@ public class usuario {
     @Column(name="telefono", length = 20)
     private String telefono;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "rol")
-    private Rol rol; // cliente, recepcionista, admin
-
-    @Column(name="contrasena",nullable = false, length = 255)
+    @Column(name="contrasena", nullable = false, length = 255)
     private String contrasena;
 
+    // Relación con la tabla Roles
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_rol", nullable = false)
+    private role rol;
 }

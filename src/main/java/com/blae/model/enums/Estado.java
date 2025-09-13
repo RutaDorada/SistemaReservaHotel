@@ -1,7 +1,8 @@
 package com.blae.model.enums;
 
 public enum Estado {
-    pagado,
     pendiente,
+    pagado,
+    confirmada,
     reembolsado
 }

@@ -1,13 +1,11 @@
 package com.blae.model.entity;
-import com.blae.model.enums.Estado;
 import com.blae.model.enums.EstadoReserva;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Set;
+
 
 @Data
 @Entity
@@ -18,33 +16,36 @@ public class reserva {
     @Column(name = "id_reserva")
     private Integer idReserva;
 
-    @ManyToOne
-    @JoinColumn(name = "id_usuario", nullable = false)
-    private usuario usuario;
+    // Relación opcional con Cliente (puede ser NULL)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_cliente")
+    private cliente cliente;
 
-    @ManyToOne
+    // Relación opcional con Huesped Temporal (puede ser NULL)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_huesped_temp")
+    private huesped_temporal huespedTemporal;
+
+    // Relación con Habitacion
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_habitacion", nullable = false)
     private habitacion habitacion;
 
-    @CreationTimestamp
-    @Column(name = "fecha_reserva", nullable = false)
-    private LocalDateTime fechaReserva = LocalDateTime.now();
+    @Column(name = "fecha_reserva", nullable = false,
+            columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime fechaReserva;
 
     @Column(name = "check_in", nullable = false)
     private LocalDate checkIn;
 
-    @Column(name = "check_out", nullable = false)
+    @Column(name = "noches", nullable = false, columnDefinition = "INT DEFAULT 1")
+    private Integer noches;
+
+    // Campo calculado - solo lectura
+    @Column(name = "check_out", insertable = false, updatable = false)
     private LocalDate checkOut;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "estado")
+    @Column(name = "estado", nullable = false)
     private EstadoReserva estado;
-
-    @ManyToMany
-    @JoinTable(
-            name = "reserva_servicio",
-            joinColumns = @JoinColumn(name = "id_reserva"),
-            inverseJoinColumns = @JoinColumn(name = "id_servicio")
-    )
-    private Set<servicio> servicios;
 }

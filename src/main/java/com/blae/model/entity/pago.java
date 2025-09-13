@@ -2,6 +2,7 @@ package com.blae.model.entity;
 
 import com.blae.model.enums.Estado;
 import com.blae.model.enums.Metodopago;
+import com.blae.model.enums.Tipopago;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -28,6 +29,10 @@ public class pago {
     @Enumerated(EnumType.STRING)
     @Column(name = "metodo_pago")
     private Metodopago metodoPago; // tarjeta, efectivo, transferencia
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_pago")
+    private Tipopago tipo;
 
     @CreationTimestamp
     @Column(name = "fecha_pago", nullable = false)
